@@ -1,0 +1,28 @@
+# Environment & Sensitive
+.env
+.env.local
+.env.*.local
+/config-local.php
+secrets.php
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Dependencies
+/node_modules/
+/vendor/
+
+# Temp files
+*.tmp
+gen_hash.php
+/temp/
+/cache/

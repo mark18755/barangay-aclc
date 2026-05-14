@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Barangay ACLC – Complaint System</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#1a3a6b;--blue2:#1565c0;--blue-light:#e3f2fd;--blue-mid:#1976d2;
+  --gold:#f9a825;--gold2:#f57f17;
+  --green:#2e7d32;--green-bg:#e8f5e9;
+  --orange:#e65100;--orange-bg:#fff3e0;
+  --red:#c62828;--red-bg:#ffebee;
+  --info:#1565c0;--info-bg:#e3f2fd;
+  --border:#dee2e6;--bg:#f0f4f8;--surface:#fff;
+  --text:#1a1a2e;--muted:#6b7280;
+  --radius:10px;--shadow:0 2px 12px rgba(0,0,0,0.08);
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+
+/* NAV */
+.pub-nav{background:var(--blue);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.pub-nav-inner{max-width:1100px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;gap:1rem;height:64px}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;flex:1;cursor:pointer}
+.nav-logo-wrap{width:46px;height:46px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.nav-brand-text h2{font-size:14px;font-weight:700;line-height:1.2}
+.nav-brand-text p{font-size:10px;opacity:.8}
+.pub-nav-links{display:flex;gap:4px}
+.pub-nav-links a{color:rgba(255,255,255,.85);text-decoration:none;padding:8px 14px;border-radius:6px;font-size:13px;font-weight:500;transition:all .15s;cursor:pointer}
+.pub-nav-links a:hover,.pub-nav-links a.active{background:rgba(255,255,255,.15);color:#fff}
+.nav-cta{display:flex;gap:8px;margin-left:1rem}
+.btn-nav-login{background:transparent;border:1.5px solid rgba(255,255,255,.5);color:#fff;padding:7px 16px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500}
+.btn-nav-login:hover{background:rgba(255,255,255,.1)}
+.btn-nav-signup{background:var(--gold);border:none;color:#1a1a2e;padding:7px 16px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700}
+.btn-nav-signup:hover{background:var(--gold2)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1a3a6b 0%,#1565c0 60%,#0d47a1 100%);color:#fff;padding:5rem 1.5rem;text-align:center;position:relative;overflow:hidden}
+.hero-logo{width:110px;height:110px;background:#fff;border-radius:50%;margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,0,0,.25)}
+.hero h1{font-size:2.2rem;font-weight:800;margin-bottom:.5rem}
+.hero p{font-size:1.05rem;opacity:.9;max-width:580px;margin:0 auto 2rem}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-hero-primary{background:var(--gold);color:#1a1a2e;border:none;padding:13px 30px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-hero-primary:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-hero-outline{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.6);padding:13px 30px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-hero-outline:hover{background:rgba(255,255,255,.1)}
+
+/* SECTIONS */
+.pub-section{max-width:1100px;margin:0 auto;padding:4rem 1.5rem}
+.section-title{text-align:center;margin-bottom:3rem}
+.section-title h2{font-size:1.75rem;font-weight:700;color:var(--blue);margin-bottom:.5rem}
+.section-title p{color:var(--muted);max-width:500px;margin:0 auto}
+.section-title .underline{width:60px;height:4px;background:var(--gold);border-radius:2px;margin:.75rem auto 0}
+
+/* STATS BAR */
+.stats-bar{background:var(--blue);color:#fff;padding:2.5rem 1.5rem}
+.stats-bar-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center}
+.stat-item .num{font-size:2rem;font-weight:800;color:var(--gold)}
+.stat-item .lbl{font-size:12px;opacity:.8;margin-top:4px}
+
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem}
+.feature-card{background:var(--surface);border-radius:var(--radius);padding:2rem 1.5rem;text-align:center;border:1px solid var(--border);transition:all .2s;box-shadow:var(--shadow);cursor:pointer}
+.feature-card:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(0,0,0,.14);border-color:var(--blue-mid)}
+.feat-icon{width:68px;height:68px;border-radius:50%;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:30px}
+.feat-icon.blue{background:var(--blue-light)}
+.feat-icon.gold{background:#fff8e1}
+.feat-icon.green{background:var(--green-bg)}
+.feat-icon.red{background:var(--red-bg)}
+.feature-card h3{font-size:15px;font-weight:700;margin-bottom:.5rem;color:var(--blue)}
+.feature-card p{font-size:13px;color:var(--muted);line-height:1.7}
+.feature-card .feat-action{display:inline-block;margin-top:1rem;padding:6px 16px;background:var(--blue-light);color:var(--blue);border-radius:20px;font-size:12px;font-weight:600;border:none;cursor:pointer;transition:all .15s}
+.feature-card:hover .feat-action{background:var(--blue);color:#fff}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.about-img-wrap{background:linear-gradient(135deg,var(--blue),var(--blue-mid));border-radius:var(--radius);padding:3rem 2rem;text-align:center;color:#fff}
+.about-big-logo{width:130px;height:130px;background:#fff;border-radius:50%;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center}
+.about-content h2{font-size:1.5rem;font-weight:700;color:var(--blue);margin-bottom:1rem}
+.about-content p{color:var(--muted);margin-bottom:1rem;line-height:1.8}
+.about-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:.5rem}
+.about-list li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--muted)}
+.about-list li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:2px}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.contact-info{display:flex;flex-direction:column;gap:1rem}
+.contact-card{background:var(--surface);border-radius:var(--radius);padding:1.25rem;border:1px solid var(--border);display:flex;align-items:flex-start;gap:12px;box-shadow:var(--shadow)}
+.contact-icon{width:44px;height:44px;border-radius:8px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.contact-card h4{font-size:13px;font-weight:700;color:var(--blue);margin-bottom:2px}
+.contact-card p{font-size:13px;color:var(--muted)}
+.contact-form-wrap{background:var(--surface);border-radius:var(--radius);padding:1.75rem;border:1px solid var(--border);box-shadow:var(--shadow)}
+.contact-form-wrap h3{font-size:15px;font-weight:700;margin-bottom:1.25rem;color:var(--blue)}
+
+/* FOOTER */
+footer{background:var(--blue);color:#fff;padding:2rem 1.5rem;text-align:center}
+footer p{opacity:.7;font-size:13px}
+footer strong{color:var(--gold)}
+
+/* AUTH MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.modal-bg.open{display:flex}
+.auth-modal{background:var(--surface);border-radius:14px;width:460px;max-width:95vw;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.auth-modal-header{background:linear-gradient(135deg,var(--blue),var(--blue-mid));color:#fff;padding:2rem 2rem 1.5rem;text-align:center;position:relative}
+.auth-modal-logo{width:76px;height:76px;background:#fff;border-radius:50%;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center}
+.auth-modal-header h2{font-size:18px;font-weight:700}
+.auth-modal-header p{font-size:12px;opacity:.8;margin-top:4px}
+.modal-close-btn{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.2);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.auth-modal-body{padding:1.75rem 2rem 2rem}
+.auth-tabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:1.5rem}
+.auth-tab{flex:1;padding:10px;text-align:center;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+.auth-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* FORMS */
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.form-control{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;color:var(--text);background:var(--surface);transition:border-color .15s}
+.form-control:focus{outline:none;border-color:var(--blue2);box-shadow:0 0 0 3px rgba(21,101,192,.1)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+textarea.form-control{min-height:90px;resize:vertical}
+.pw-wrap{position:relative}
+.pw-wrap .form-control{padding-right:40px}
+.pw-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px}
+.btn-full{width:100%;padding:11px;border-radius:8px;border:none;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;margin-top:4px;font-family:inherit}
+.btn-primary-full{background:var(--blue);color:#fff}
+.btn-primary-full:hover{background:var(--blue2)}
+.forgot-link{text-align:center;margin-top:12px;font-size:12px;color:var(--muted)}
+.forgot-link a{color:var(--blue2);text-decoration:none;cursor:pointer}
+
+/* FORGOT PASSWORD MODAL */
+.forgot-modal{background:var(--surface);border-radius:14px;width:440px;max-width:95vw;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+
+/* SYSTEM APP */
+#systemApp{display:none}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:225px;background:var(--blue);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;bottom:0;z-index:10;overflow-y:auto}
+.sidebar-brand{padding:1.2rem 1rem;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px}
+.sidebar-brand-logo{width:42px;height:42px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sidebar-brand-text h3{font-size:12px;font-weight:700;line-height:1.3}
+.sidebar-brand-text p{font-size:10px;opacity:.6}
+.sidebar nav{flex:1;padding:.5rem 0}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 1rem;cursor:pointer;font-size:13px;color:rgba(255,255,255,.75);transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-item.active{background:rgba(255,255,255,.13);color:#fff;border-left-color:var(--gold);font-weight:600}
+.nav-section{padding:8px 1rem 4px;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-top:4px}
+.nav-icon{font-size:16px;width:20px;text-align:center}
+.notif-badge{background:var(--gold);color:#1a1a2e;border-radius:99px;font-size:10px;font-weight:700;padding:1px 7px;margin-left:auto}
+.sidebar-footer{padding:1rem;border-top:1px solid rgba(255,255,255,.1)}
+.sidebar-user-info .name{font-size:13px;font-weight:600;color:#fff}
+.sidebar-user-info .role{font-size:11px;color:rgba(255,255,255,.5);text-transform:capitalize;margin-bottom:8px}
+.main-content{margin-left:225px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5;box-shadow:var(--shadow)}
+.topbar h1{font-size:16px;font-weight:700;color:var(--blue)}
+.user-pill{display:flex;align-items:center;gap:8px;background:var(--blue-light);padding:6px 12px;border-radius:20px}
+.user-avatar{width:30px;height:30px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.page-content{padding:1.5rem;flex:1}
+.page-section{display:none}
+.page-section.active{display:block}
+
+/* STAT CARDS */
+.stats-grid-app{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat-card-app{background:var(--surface);border-radius:var(--radius);padding:1.25rem;border:1px solid var(--border);box-shadow:var(--shadow)}
+.stat-card-app .s-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.stat-card-app .s-val{font-size:30px;font-weight:800;color:var(--blue)}
+.stat-card-app.c-pending .s-val{color:var(--orange)}
+.stat-card-app.c-ongoing .s-val{color:var(--info)}
+.stat-card-app.c-resolved .s-val{color:var(--green)}
+
+/* CARD */
+.card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:1.5rem}
+.card-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.card-header h3{font-size:14px;font-weight:700;color:var(--blue)}
+.card-body{padding:1.25rem}
+
+/* TABLE */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{padding:10px 12px;text-align:left;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafbfc}
+.case-num{font-weight:700;color:var(--blue);font-size:12px}
+
+/* BADGES */
+.badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700}
+.badge-pending{background:var(--orange-bg);color:var(--orange)}
+.badge-ongoing{background:var(--info-bg);color:var(--info)}
+.badge-resolved{background:var(--green-bg);color:var(--green)}
+.badge-active{background:var(--green-bg);color:var(--green)}
+.badge-pend-acc{background:var(--orange-bg);color:var(--orange)}
+.badge-disabled{background:var(--red-bg);color:var(--red)}
+.badge-admin{background:#ede7f6;color:#4527a0}
+.badge-staff{background:#e1f5fe;color:#01579b}
+.badge-resident{background:#f3e5f5;color:#6a1b9a}
+.badge-unread{background:var(--gold);color:#1a1a2e}
+.badge-read{background:#f5f5f5;color:#999}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;font-size:13px;font-family:inherit;transition:all .15s;white-space:nowrap;font-weight:500}
+.btn:hover{background:var(--bg)}
+.btn-sm{padding:4px 10px;font-size:12px}
+.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-primary:hover{background:var(--blue2)}
+.btn-danger{background:var(--red-bg);color:var(--red);border-color:var(--red)}
+.btn-danger:hover{background:var(--red);color:#fff}
+.btn-success{background:var(--green-bg);color:var(--green);border-color:var(--green)}
+.btn-success:hover{background:var(--green);color:#fff}
+.btn-warning{background:var(--orange-bg);color:var(--orange);border-color:var(--orange)}
+.btn-warning:hover{background:var(--orange);color:#fff}
+
+/* TOOLBAR */
+.toolbar{display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.search-input{padding:8px 12px 8px 34px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='M21 21l-4.35-4.35'/%3E%3C/svg%3E") no-repeat 10px center var(--surface);flex:1;min-width:180px}
+.search-input:focus{outline:none;border-color:var(--blue2)}
+.form-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)}
+
+/* EDIT MODAL */
+.edit-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:50;align-items:center;justify-content:center}
+.edit-modal-bg.open{display:flex}
+.edit-modal{background:var(--surface);border-radius:14px;width:590px;max-width:95vw;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.edit-modal-sm{width:420px}
+.edit-modal-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--blue-light);border-radius:14px 14px 0 0}
+.edit-modal-header h3{font-size:15px;font-weight:700;color:var(--blue)}
+.close-btn{background:none;border:none;cursor:pointer;font-size:20px;color:var(--muted);line-height:1}
+.edit-modal-body{padding:1.5rem}
+
+/* MESSAGE VIEW */
+.msg-view{background:var(--bg);border-radius:8px;padding:1rem;margin-top:1rem;border:1px solid var(--border)}
+.msg-view p{font-size:13px;line-height:1.7;color:var(--text)}
+
+/* WELCOME BANNER */
+.welcome-banner{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border-radius:var(--radius);padding:1.75rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.5rem}
+.welcome-banner .wb-icon{width:60px;height:60px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--blue);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;max-width:320px}
+.toast.show{opacity:1;transform:none}
+.toast.success{background:var(--green)}
+.toast.error{background:var(--red)}
+.empty-state{text-align:center;padding:3rem;color:var(--muted)}
+
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:transform .3s}
+  .sidebar.open{transform:none}
+  .main-content{margin-left:0}
+  .form-row{grid-template-columns:1fr}
+  .about-grid,.contact-grid{grid-template-columns:1fr}
+  .pub-nav-links{display:none}
+  .hero h1{font-size:1.5rem}
+  .stats-bar-inner{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- ======================================================
+     PUBLIC SITE
+====================================================== -->
+<div id="publicSite">
+
+<nav class="pub-nav">
+  <div class="pub-nav-inner">
+    <div class="nav-brand" onclick="pubScroll('home')">
+      <div class="nav-logo-wrap">
+        <svg width="38" height="38" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="48" fill="#1a3a6b"/>
+          <polygon points="50,8 92,32 92,68 50,92 8,68 8,32" fill="none" stroke="#f9a825" stroke-width="5"/>
+          <circle cx="50" cy="50" r="22" fill="#f9a825"/>
+          <text x="50" y="57" text-anchor="middle" fill="#1a3a6b" font-size="17" font-weight="bold" font-family="Arial">ACLC</text>
+        </svg>
+      </div>
+      <div class="nav-brand-text">
+        <h2>Barangay ACLC</h2>
+        <p>Complaint Management System</p>
+      </div>
+    </div>
+    <div class="pub-nav-links">
+      <a class="active" onclick="pubScroll('home')">Home</a>
+      <a onclick="pubScroll('features')">Features</a>
+      <a onclick="pubScroll('about')">About</a>
+      <a onclick="pubScroll('contact')">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn-nav-login"  onclick="openAuth('login')">Login</button>
+      <button class="btn-nav-signup" onclick="openAuth('register')">Create Account</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HOME / HERO -->
+<section id="home">
+  <div class="hero">
+    <div class="hero-logo">
+      <svg width="88" height="88" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="48" fill="#1a3a6b"/>
+        <polygon points="50,8 92,32 92,68 50,92 8,68 8,32" fill="none" stroke="#f9a825" stroke-width="5"/>
+        <circle cx="50" cy="50" r="22" fill="#f9a825"/>
+        <text x="50" y="57" text-anchor="middle" fill="#1a3a6b" font-size="17" font-weight="bold" font-family="Arial">ACLC</text>
+      </svg>
+    </div>
+    <h1>Barangay ACLC</h1>
+    <p>Official Online Complaint & Blotter Management System — File, track, and resolve barangay complaints efficiently and transparently.</p>
+    <div class="hero-btns">
+      <button class="btn-hero-primary" onclick="openAuth('register')">📝 Create Account</button>
+      <button class="btn-hero-outline" onclick="openAuth('login')">🔐 Login to System</button>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stat-item"><div class="num">500+</div><div class="lbl">Residents Served</div></div>
+    <div class="stat-item"><div class="num">200+</div><div class="lbl">Cases Handled</div></div>
+    <div class="stat-item"><div class="num">95%</div><div class="lbl">Resolution Rate</div></div>
+    <div class="stat-item"><div class="num">24/7</div><div class="lbl">Online Access</div></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="pub-section">
+    <div class="section-title">
+      <h2>System Features</h2>
+      <p>Everything you need to manage barangay complaints and blotter records online</p>
+      <div class="underline"></div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card" onclick="openAuth('register')">
+        <div class="feat-icon blue">📋</div>
+        <h3>File Complaints Online</h3>
+        <p>Residents can file complaints anytime, anywhere through the online system without going to the barangay hall.</p>
+        <span class="feat-action">Get Started →</span>
+      </div>
+      <div class="feature-card" onclick="openAuth('login')">
+        <div class="feat-icon gold">📊</div>
+        <h3>Track Case Status</h3>
+        <p>Monitor the status of your complaint in real-time — Pending, Ongoing, or Resolved — with full transparency.</p>
+        <span class="feat-action">Login to Track →</span>
+      </div>
+      <div class="feature-card" onclick="openAuth('login')">
+        <div class="feat-icon green">📁</div>
+        <h3>Blotter Records</h3>
+        <p>Maintain an organized digital blotter for all reported incidents with complete records and hearing dates.</p>
+        <span class="feat-action">View Records →</span>
+      </div>
+      <div class="feature-card" onclick="openAuth('login')">
+        <div class="feat-icon red">🖨️</div>
+        <h3>Print Reports</h3>
+        <p>Generate and print official complaint reports and blotter records for legal and administrative purposes.</p>
+        <span class="feat-action">Print Reports →</span>
+      </div>
+      <div class="feature-card" onclick="openAuth('register')">
+        <div class="feat-icon blue">👥</div>
+        <h3>User Management</h3>
+        <p>Admin can manage accounts, approve registrations, and assign roles to staff members and residents.</p>
+        <span class="feat-action">Register Now →</span>
+      </div>
+      <div class="feature-card" onclick="pubScroll('contact')">
+        <div class="feat-icon gold">📞</div>
+        <h3>Contact the Barangay</h3>
+        <p>Send a message directly to Barangay ACLC officials through the online contact form — fast and easy.</p>
+        <span class="feat-action">Contact Us →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="background:var(--surface);padding:1px 0">
+  <div class="pub-section">
+    <div class="section-title">
+      <h2>About the System</h2>
+      <p>Learn more about the Barangay ACLC Complaint Management System</p>
+      <div class="underline"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-img-wrap">
+        <div class="about-big-logo">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="48" fill="#1a3a6b"/>
+            <polygon points="50,8 92,32 92,68 50,92 8,68 8,32" fill="none" stroke="#f9a825" stroke-width="5"/>
+            <circle cx="50" cy="50" r="22" fill="#f9a825"/>
+            <text x="50" y="57" text-anchor="middle" fill="#1a3a6b" font-size="17" font-weight="bold" font-family="Arial">ACLC</text>
+          </svg>
+        </div>
+        <h3 style="font-size:20px;margin-bottom:8px">Barangay ACLC</h3>
+        <p style="opacity:.8;font-size:13px">Serving our community with integrity and transparency</p>
+        <div style="margin-top:1.5rem;display:flex;gap:1.5rem;justify-content:center">
+          <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--gold)">2026</div><div style="font-size:11px;opacity:.7">Established</div></div>
+          <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--gold)">ACLC</div><div style="font-size:11px;opacity:.7">Barangay</div></div>
+        </div>
+      </div>
+      <div class="about-content">
+        <h2>Purpose of the System</h2>
+        <p>The Barangay ACLC Online Complaint System was developed to modernize the process of filing, tracking, and resolving community complaints and blotter records.</p>
+        <p>This system aims to make barangay services more accessible to all residents by providing a convenient online platform available 24 hours a day, 7 days a week.</p>
+        <ul class="about-list">
+          <li>Digitize all complaint and blotter records for easy retrieval</li>
+          <li>Allow residents to file complaints without visiting the barangay hall</li>
+          <li>Provide real-time updates on case status and resolution</li>
+          <li>Generate official printed reports for legal proceedings</li>
+          <li>Manage user accounts with role-based access control</li>
+          <li>Maintain a transparent and accountable process for all residents</li>
+        </ul>
+        <div style="margin-top:1.5rem;padding:1rem;background:var(--blue-light);border-radius:8px;border-left:4px solid var(--blue)">
+          <p style="font-size:13px;color:var(--blue)"><strong>System:</strong> Barangay ACLC Complaint Management<br/>
+          <strong>Established:</strong> 2026 &nbsp;|&nbsp; <strong>Technology:</strong> HTML, CSS, JS, PHP, MySQL</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="pub-section">
+    <div class="section-title">
+      <h2>Contact Us</h2>
+      <p>Get in touch with the Barangay ACLC office</p>
+      <div class="underline"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-card"><div class="contact-icon">📍</div><div><h4>Address</h4><p>Barangay Hall, ACLC<br/>Philippines</p></div></div>
+        <div class="contact-card"><div class="contact-icon">📞</div><div><h4>Phone</h4><p>(02) 8123-4567<br/>0917-123-4567</p></div></div>
+        <div class="contact-card"><div class="contact-icon">📧</div><div><h4>Email</h4><p>brgy.aclc@gov.ph</p></div></div>
+        <div class="contact-card"><div class="contact-icon">🕐</div><div><h4>Office Hours</h4><p>Monday – Friday<br/>8:00 AM – 5:00 PM</p></div></div>
+      </div>
+      <div class="contact-form-wrap">
+        <h3>📨 Send a Message</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Full Name *</label><input class="form-control" id="ct-name" type="text" placeholder="Your full name"/></div>
+          <div class="form-group"><label>Email *</label><input class="form-control" id="ct-email" type="email" placeholder="your@email.com"/></div>
+        </div>
+        <div class="form-group"><label>Subject *</label><input class="form-control" id="ct-subject" type="text" placeholder="What is this about?"/></div>
+        <div class="form-group"><label>Message *</label><textarea class="form-control" id="ct-msg" placeholder="Type your message here..."></textarea></div>
+        <button class="btn btn-primary" style="width:100%" onclick="sendContact()">📨 Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 <strong>Barangay ACLC</strong> — Online Complaint Management System. All rights reserved.</p>
+  <p style="margin-top:6px;font-size:12px">Republic of the Philippines</p>
+</footer>
+</div><!-- /publicSite -->
+
+<!-- ======================================================
+     AUTH MODAL (Login / Register)
+====================================================== -->
+<div class="modal-bg" id="authModal">
+  <div class="auth-modal">
+    <div class="auth-modal-header">
+      <div class="auth-modal-logo">
+        <svg width="56" height="56" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="48" fill="#1a3a6b"/>
+          <polygon points="50,8 92,32 92,68 50,92 8,68 8,32" fill="none" stroke="#f9a825" stroke-width="5"/>
+          <circle cx="50" cy="50" r="22" fill="#f9a825"/>
+          <text x="50" y="57" text-anchor="middle" fill="#1a3a6b" font-size="17" font-weight="bold" font-family="Arial">ACLC</text>
+        </svg>
+      </div>
+      <h2>Barangay ACLC</h2>
+      <p>Complaint Management System</p>
+      <button class="modal-close-btn" onclick="closeAuth()">✕</button>
+    </div>
+    <div class="auth-modal-body">
+      <div class="auth-tabs">
+        <div class="auth-tab active" id="tab-login"    onclick="switchTab('login')">🔐 Login</div>
+        <div class="auth-tab"        id="tab-register" onclick="switchTab('register')">📝 Create Account</div>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="loginForm">
+        <div class="form-group"><label>Email Address</label><input class="form-control" id="l-email" type="email" placeholder="Enter your email"/></div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="pw-wrap">
+            <input class="form-control" id="l-password" type="password" placeholder="Enter password"/>
+            <button class="pw-toggle" onclick="togglePw('l-password',this)">👁</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Captcha *</label>
+          <div id="loginRecaptchaWidget" style="margin-bottom:16px"></div>
+        </div>
+        <button class="btn-full btn-primary-full" onclick="doLogin()">Login to System</button>
+        <div class="forgot-link">Forgot password? <a onclick="openForgot()">Click here to reset</a></div>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="registerForm" style="display:none">
+        <div class="form-row">
+          <div class="form-group"><label>Full Name *</label><input class="form-control" id="r-fullname" type="text" placeholder="Juan dela Cruz"/></div>
+          <div class="form-group"><label>Email *</label><input class="form-control" id="r-email" type="email" placeholder="juan@email.com"/></div>
+        </div>
+        <div class="form-group"><label>Address</label><input class="form-control" id="r-address" type="text" placeholder="House #, Street, Barangay ACLC"/></div>
+        <div class="form-group"><label>Contact Number * <small style="color:var(--muted);font-weight:400">(needed for password reset)</small></label><input class="form-control" id="r-contact" type="text" placeholder="09XX-XXX-XXXX"/></div>
+        <div class="form-row">
+          <div class="form-group"><label>Password *</label>
+            <div class="pw-wrap"><input class="form-control" id="r-password" type="password" placeholder="Min. 6 characters"/><button class="pw-toggle" onclick="togglePw('r-password',this)">👁</button></div>
+          </div>
+          <div class="form-group"><label>Confirm Password *</label><input class="form-control" id="r-confirm" type="password" placeholder="Re-enter password"/></div>
+        </div>
+        <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:10px 12px;margin-bottom:1rem;font-size:12px;color:#5d4037">
+          ⚠️ Please click the checkbox below to verify you are not a robot.
+        </div>
+        <div class="form-group">
+          <label>Captcha *</label>
+          <div id="registerRecaptchaWidget" style="margin-bottom:16px"></div>
+        </div>
+        <button class="btn-full btn-primary-full" onclick="doRegister()">Create Account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD MODAL -->
+<div class="modal-bg" id="forgotModal">
+  <div class="forgot-modal auth-modal">
+    <div class="auth-modal-header">
+      <div class="auth-modal-logo">
+        <svg width="56" height="56" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="48" fill="#1a3a6b"/>
+          <polygon points="50,8 92,32 92,68 50,92 8,68 8,32" fill="none" stroke="#f9a825" stroke-width="5"/>
+          <circle cx="50" cy="50" r="22" fill="#f9a825"/>
+          <text x="50" y="57" text-anchor="middle" fill="#1a3a6b" font-size="17" font-weight="bold" font-family="Arial">ACLC</text>
+        </svg>
+      </div>
+      <h2>Forgot Password</h2>
+      <p>Barangay ACLC — Account Recovery</p>
+      <button class="modal-close-btn" onclick="closeForgot()">✕</button>
+    </div>
+    <div class="auth-modal-body">
+      <!-- Step 1 -->
+      <div id="fp-step1">
+        <div style="text-align:center;margin-bottom:1.25rem"><div style="font-size:36px;margin-bottom:8px">🔍</div>
+          <p style="font-size:13px;color:var(--muted)">Enter your email and the contact number registered to your account.</p>
+        </div>
+        <div class="form-group"><label>Email Address</label><input class="form-control" id="fp-email" type="email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label>Registered Contact Number</label><input class="form-control" id="fp-contact" type="text" placeholder="09XXXXXXXXX"/></div>
+        <button class="btn-full btn-primary-full" onclick="verifyIdentity()">Verify Identity</button>
+        <div class="forgot-link" style="margin-top:12px">Remembered it? <a onclick="closeForgot();openAuth('login')">Back to Login</a></div>
+      </div>
+      <!-- Step 2 -->
+      <div id="fp-step2" style="display:none">
+        <div style="text-align:center;margin-bottom:1.5rem"><div style="font-size:40px;margin-bottom:8px">✅</div>
+          <h3 style="font-size:16px;font-weight:700;color:var(--green);margin-bottom:4px">Identity Verified!</h3>
+          <p style="font-size:13px;color:var(--muted)">Welcome, <strong id="fp-fullname"></strong>. Set your new password below.</p>
+        </div>
+        <div class="form-group"><label>New Password</label>
+          <div class="pw-wrap"><input class="form-control" id="fp-newpass" type="password" placeholder="Minimum 6 characters"/><button class="pw-toggle" onclick="togglePw('fp-newpass',this)">👁</button></div>
+        </div>
+        <div class="form-group"><label>Confirm New Password</label>
+          <div class="pw-wrap"><input class="form-control" id="fp-confirm" type="password" placeholder="Re-enter new password"/><button class="pw-toggle" onclick="togglePw('fp-confirm',this)">👁</button></div>
+        </div>
+        <button class="btn-full btn-primary-full" onclick="resetPassword()">Reset Password</button>
+      </div>
+      <!-- Step 3 -->
+      <div id="fp-step3" style="display:none">
+        <div style="text-align:center;padding:1rem 0">
+          <div style="font-size:52px;margin-bottom:12px">🎉</div>
+          <h3 style="font-size:17px;font-weight:700;color:var(--blue);margin-bottom:8px">Password Reset Successful!</h3>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:1.5rem">Your password has been updated. You can now log in.</p>
+          <button class="btn btn-primary" style="width:100%" onclick="closeForgot();openAuth('login')">🔐 Go to Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================
+     SYSTEM APP
+====================================================== -->
+<div id="systemApp">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-logo">
+          <svg width="34" height="34" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="48" fill="#1a3a6b"/>
+            <polygon points="50,8 92,32 92,68 50,92 8,68 8,32" fill="none" stroke="#f9a825" stroke-width="5"/>
+            <circle cx="50" cy="50" r="22" fill="#f9a825"/>
+            <text x="50" y="57" text-anchor="middle" fill="#1a3a6b" font-size="17" font-weight="bold" font-family="Arial">ACLC</text>
+          </svg>
+        </div>
+        <div class="sidebar-brand-text"><h3>Barangay ACLC</h3><p>Complaint System</p></div>
+      </div>
+      <nav>
+        <div class="nav-section">Main</div>
+        <div class="nav-item active" data-nav="dashboard"    onclick="navigate('dashboard')"><span class="nav-icon">🏠</span> Dashboard</div>
+        <div class="nav-item"        data-nav="newcomplaint" onclick="navigate('newcomplaint')"><span class="nav-icon">➕</span> New Complaint</div>
+        <div class="nav-item"        data-nav="blotter"      onclick="navigate('blotter')"><span class="nav-icon">📁</span> Blotter Records</div>
+        <div class="nav-item"        data-nav="reports"      onclick="navigate('reports')"><span class="nav-icon">📊</span> Reports</div>
+        <div class="nav-section admin-only" style="display:none">Admin</div>
+        <div class="nav-item admin-only" data-nav="accounts" onclick="navigate('accounts')" style="display:none"><span class="nav-icon">👥</span> Manage Accounts <span class="notif-badge" id="pendingBadge" style="display:none">0</span></div>
+        <div class="nav-item admin-only" data-nav="inbox"    onclick="navigate('inbox')"    style="display:none"><span class="nav-icon">📨</span> Inbox <span class="notif-badge" id="inboxBadge" style="display:none">0</span></div>
+        <div class="nav-section">Account</div>
+        <div class="nav-item" data-nav="profile" onclick="navigate('profile')"><span class="nav-icon">👤</span> My Profile</div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-user-info">
+          <div class="name" id="sidebarName">—</div>
+          <div class="role" id="sidebarRole">—</div>
+        </div>
+        <button class="btn" style="width:100%;color:#fff;border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.08)" onclick="doLogout()">🚪 Logout</button>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <div class="topbar">
+        <h1 id="pageTitle">Dashboard</h1>
+        <div class="user-pill">
+          <div class="user-avatar" id="userAvatar">A</div>
+          <span id="topbarName" style="font-size:13px;font-weight:600">—</span>
+        </div>
+      </div>
+
+      <div class="page-content">
+
+        <!-- DASHBOARD -->
+        <div class="page-section active" id="page-dashboard">
+          <div class="welcome-banner">
+            <div class="wb-icon">🏠</div>
+            <div><h2 id="welcomeMsg" style="font-size:18px;font-weight:700;margin-bottom:4px">Welcome!</h2>
+              <p style="font-size:13px;opacity:.85">Barangay ACLC Online Complaint Management System — Established 2026</p>
+            </div>
+          </div>
+          <div class="stats-grid-app">
+            <div class="stat-card-app"><div class="s-label">Total Complaints</div><div class="s-val" id="d-total">0</div></div>
+            <div class="stat-card-app"><div class="s-label">Blotter Cases</div><div class="s-val" id="d-blotter">0</div></div>
+            <div class="stat-card-app c-pending"><div class="s-label">Pending</div><div class="s-val" id="d-pending">0</div></div>
+            <div class="stat-card-app c-ongoing"><div class="s-label">Ongoing</div><div class="s-val" id="d-ongoing">0</div></div>
+            <div class="stat-card-app c-resolved"><div class="s-label">Resolved</div><div class="s-val" id="d-resolved">0</div></div>
+            <div class="stat-card-app admin-only" style="display:none"><div class="s-label">Pending Accounts</div><div class="s-val" id="d-pendingAcc" style="color:var(--orange)">0</div></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>📋 Recent Cases</h3>
+              <button class="btn btn-sm btn-primary" onclick="navigate('newcomplaint')">+ New Complaint</button>
+            </div>
+            <div class="table-wrap">
+              <table><thead><tr><th>Case #</th><th>Complainant</th><th>Respondent</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+              <tbody id="recentTbody"><tr><td colspan="6"><div class="empty-state">Loading...</div></td></tr></tbody></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEW COMPLAINT -->
+        <div class="page-section" id="page-newcomplaint">
+          <div class="card">
+            <div class="card-header"><h3>📋 File New Complaint</h3></div>
+            <div class="card-body">
+              <form id="complaintForm" onsubmit="saveComplaint(event)">
+                <div class="form-row">
+                  <div class="form-group"><label>Complainant Name *</label><input class="form-control" id="f-cname" type="text" required/></div>
+                  <div class="form-group"><label>Respondent Name *</label><input class="form-control" id="f-rname" type="text" required/></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group"><label>Complainant Address</label><input class="form-control" id="f-caddr" type="text"/></div>
+                  <div class="form-group"><label>Respondent Address</label><input class="form-control" id="f-raddr" type="text"/></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group"><label>Complainant Contact</label><input class="form-control" id="f-ccon" type="text"/></div>
+                  <div class="form-group"><label>Date of Incident *</label><input class="form-control" id="f-date" type="date" required/></div>
+                </div>
+                <div class="form-group"><label>Incident Description *</label><textarea class="form-control" id="f-desc" required></textarea></div>
+                <div class="form-row">
+                  <div class="form-group"><label>Status</label>
+                    <select class="form-control" id="f-status">
+                      <option value="Pending">Pending</option>
+                      <option value="Ongoing">Ongoing</option>
+                      <option value="Resolved">Resolved</option>
+                    </select>
+                  </div>
+                  <div class="form-group"><label>Notes / Remarks</label><input class="form-control" id="f-notes" type="text"/></div>
+                </div>
+                <div class="form-actions">
+                  <button type="button" class="btn" onclick="navigate('dashboard')">Cancel</button>
+                  <button type="submit" class="btn btn-primary">💾 Save Complaint</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOTTER -->
+        <div class="page-section" id="page-blotter">
+          <div class="card">
+            <div class="card-header">
+              <h3>📁 Blotter Records</h3>
+              <button class="btn btn-sm" onclick="printReport('blotterTable','Blotter Report')">🖨️ Print</button>
+            </div>
+            <div class="card-body" style="padding-bottom:0">
+              <div class="toolbar">
+                <input class="search-input" id="blotterSearch" type="text" placeholder="Search records..." oninput="loadBlotter(this.value)"/>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table id="blotterTable">
+                <thead><tr><th>Blotter #</th><th>Case #</th><th>Complainant</th><th>Respondent</th><th>Status</th><th>Hearing Date</th><th>Action</th></tr></thead>
+                <tbody id="blotterTbody"><tr><td colspan="7"><div class="empty-state">Loading...</div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- REPORTS -->
+        <div class="page-section" id="page-reports">
+          <div class="card">
+            <div class="card-header">
+              <h3>📊 Reports</h3>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn btn-sm" onclick="printReport('reportTable','Complaint Report')">🖨️ Complaint Report</button>
+                <button class="btn btn-sm" onclick="printReport('blotterTable','Blotter Report')">🖨️ Blotter Report</button>
+              </div>
+            </div>
+            <div class="card-body" style="padding-bottom:0">
+              <div class="toolbar">
+                <input class="search-input" id="reportSearch" type="text" placeholder="Search..." oninput="loadReports()"/>
+                <select class="form-control" id="reportStatus" style="width:auto;flex:0 0 auto" onchange="loadReports()">
+                  <option value="">All Statuses</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Ongoing">Ongoing</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table id="reportTable">
+                <thead><tr><th>Case #</th><th>Complainant</th><th>Respondent</th><th>Status</th><th>Date of Incident</th><th>Date Filed</th></tr></thead>
+                <tbody id="reportTbody"><tr><td colspan="6"><div class="empty-state">Loading...</div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- MANAGE ACCOUNTS (admin/staff only) -->
+        <div class="page-section" id="page-accounts">
+          <div class="card">
+            <div class="card-header">
+              <h3>👥 Manage Accounts</h3>
+              <span style="font-size:12px;color:var(--muted)">Approve, disable, change roles, or delete user accounts</span>
+            </div>
+            <div class="card-body" style="padding-bottom:0">
+              <div class="toolbar">
+                <input class="search-input" id="usersSearch" type="text" placeholder="Search users..." oninput="loadUsers(this.value)"/>
+                <select class="form-control" id="usersFilter" style="width:auto;flex:0 0 auto" onchange="loadUsers()">
+                  <option value="">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="active">Active</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table><thead><tr><th>Full Name</th><th>Email</th><th>Contact</th><th>Role</th><th>Status</th><th>Registered</th><th>Actions</th></tr></thead>
+              <tbody id="usersTbody"><tr><td colspan="7"><div class="empty-state">Loading...</div></td></tr></tbody></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- INBOX (admin/staff only) -->
+        <div class="page-section" id="page-inbox">
+          <div class="card">
+            <div class="card-header"><h3>📨 Contact Messages</h3><span style="font-size:12px;color:var(--muted)">Messages sent from the Contact Us form</span></div>
+            <div class="table-wrap">
+              <table><thead><tr><th>Sender</th><th>Email</th><th>Subject</th><th>Status</th><th>Date Sent</th><th>Action</th></tr></thead>
+              <tbody id="inboxTbody"><tr><td colspan="6"><div class="empty-state">Loading...</div></td></tr></tbody></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE -->
+        <div class="page-section" id="page-profile">
+          <div class="card" style="max-width:560px">
+            <div class="card-header"><h3>👤 My Profile</h3></div>
+            <div class="card-body">
+              <div id="profileInfo" style="margin-bottom:1.5rem;padding:1rem;background:var(--blue-light);border-radius:8px"></div>
+              <h4 style="font-size:13px;font-weight:700;margin-bottom:1rem;color:var(--blue)">🔒 Change Password</h4>
+              <div class="form-group"><label>Current Password</label><input class="form-control" id="pw-old" type="password"/></div>
+              <div class="form-group"><label>New Password</label><input class="form-control" id="pw-new" type="password"/></div>
+              <div class="form-group"><label>Confirm New Password</label><input class="form-control" id="pw-confirm" type="password"/></div>
+              <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /page-content -->
+    </div><!-- /main-content -->
+  </div>
+</div><!-- /systemApp -->
+
+<!-- EDIT COMPLAINT MODAL -->
+<div class="edit-modal-bg" id="editModal">
+  <div class="edit-modal">
+    <div class="edit-modal-header">
+      <h3>✏️ Edit Complaint — <span id="editCaseNum"></span></h3>
+      <button class="close-btn" onclick="closeEdit()">✕</button>
+    </div>
+    <div class="edit-modal-body">
+      <input type="hidden" id="edit-id"/>
+      <div class="form-row">
+        <div class="form-group"><label>Complainant Name</label><input class="form-control" id="e-cname" type="text"/></div>
+        <div class="form-group"><label>Respondent Name</label><input class="form-control" id="e-rname" type="text"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Complainant Address</label><input class="form-control" id="e-caddr" type="text"/></div>
+        <div class="form-group"><label>Respondent Address</label><input class="form-control" id="e-raddr" type="text"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Complainant Contact</label><input class="form-control" id="e-ccon" type="text"/></div>
+        <div class="form-group"><label>Date of Incident</label><input class="form-control" id="e-date" type="date"/></div>
+      </div>
+      <div class="form-group"><label>Incident Description</label><textarea class="form-control" id="e-desc"></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Status</label>
+          <select class="form-control" id="e-status">
+            <option value="Pending">Pending</option>
+            <option value="Ongoing">Ongoing</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Notes</label><input class="form-control" id="e-notes" type="text"/></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-danger" onclick="deleteComplaint()">🗑 Delete</button>
+        <button class="btn" onclick="closeEdit()">Cancel</button>
+        <button class="btn btn-primary" onclick="updateComplaint()">💾 Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MANAGE USER MODAL -->
+<div class="edit-modal-bg" id="userModal">
+  <div class="edit-modal edit-modal-sm">
+    <div class="edit-modal-header">
+      <h3>👤 Manage Account</h3>
+      <button class="close-btn" onclick="closeUserModal()">✕</button>
+    </div>
+    <div class="edit-modal-body">
+      <input type="hidden" id="um-id"/>
+      <div style="background:var(--blue-light);border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:15px;font-weight:700;color:var(--blue)" id="um-displayname"></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px" id="um-displayemail"></div>
+        <div style="font-size:12px;color:var(--muted)" id="um-displaycontact"></div>
+      </div>
+      <div class="form-group"><label>Role</label>
+        <select class="form-control" id="um-role">
+          <option value="resident">Resident</option>
+          <option value="staff">Staff</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Account Status</label>
+        <select class="form-control" id="um-status">
+          <option value="active">Active</option>
+          <option value="pending">Pending</option>
+          <option value="disabled">Disabled</option>
+        </select>
+      </div>
+      <div style="background:#e8f5e9;border-radius:8px;padding:10px;margin-bottom:1rem;font-size:12px;color:var(--green)">
+        ✅ Set to <strong>Active</strong> to approve. Set to <strong>Disabled</strong> to block access.
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-danger btn-sm" onclick="deleteUser()">🗑 Delete Account</button>
+        <button class="btn btn-sm" onclick="closeUserModal()">Cancel</button>
+        <button class="btn btn-primary btn-sm" onclick="updateUser()">💾 Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW MESSAGE MODAL -->
+<div class="edit-modal-bg" id="msgModal">
+  <div class="edit-modal edit-modal-sm">
+    <div class="edit-modal-header">
+      <h3>📨 Message Details</h3>
+      <button class="close-btn" onclick="closeMsgModal()">✕</button>
+    </div>
+    <div class="edit-modal-body">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px;margin-bottom:1rem">
+        <span style="color:var(--muted);font-weight:600">From:</span><span id="msg-from"></span>
+        <span style="color:var(--muted);font-weight:600">Email:</span><span id="msg-email"></span>
+        <span style="color:var(--muted);font-weight:600">Subject:</span><span id="msg-subject" style="font-weight:600;color:var(--blue)"></span>
+        <span style="color:var(--muted);font-weight:600">Date:</span><span id="msg-date"></span>
+      </div>
+      <div class="msg-view"><p id="msg-body"></p></div>
+      <div class="form-actions">
+        <button class="btn btn-danger btn-sm" onclick="deleteMessage()">🗑 Delete</button>
+        <button class="btn btn-sm" onclick="closeMsgModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+const API = {
+  auth:       'api/auth.php',
+  complaints: 'api/complaints.php',
+  blotter:    'api/blotter.php',
+  dashboard:  'api/dashboard.php',
+  messages:   'api/messages.php',
+};
+let currentUser = null, editingId = null, editingUserId = null, viewingMsgId = null;
+let allUsers = [], allMessages = [];
+let loginRecaptchaWidget = null, registerRecaptchaWidget = null;
+let currentRecaptchaToken = { login: '', register: '' };
+let recaptchaReady = false, pendingRecaptchaTab = null;
+
+function onRecaptchaLoad() {
+  recaptchaReady = true;
+  if (pendingRecaptchaTab) {
+    renderRecaptchaWidget(pendingRecaptchaTab);
+    pendingRecaptchaTab = null;
+  }
+}
+
+function renderRecaptchaWidget(tab = 'login') {
+  if (!recaptchaReady || typeof grecaptcha === 'undefined') {
+    console.warn('reCAPTCHA not ready. recaptchaReady:', recaptchaReady, 'grecaptcha:', typeof grecaptcha);
+    pendingRecaptchaTab = tab;
+    return;
+  }
+  const sitekey = '6LcXNOksAAAAAEtTR61cmQeNr2ZYWxX4oBjc8kCK';
+  console.log(`Rendering ${tab} reCAPTCHA widget with sitekey:`, sitekey.substring(0, 20) + '...');
+  if (tab === 'login' && !loginRecaptchaWidget) {
+    loginRecaptchaWidget = grecaptcha.render('loginRecaptchaWidget', {
+      sitekey,
+      callback: token => {
+        console.log('✓ Login reCAPTCHA callback fired with token:', token.substring(0, 30) + '...');
+        currentRecaptchaToken.login = token;
+      },
+      'expired-callback': () => {
+        console.warn('⚠ Login reCAPTCHA expired');
+        currentRecaptchaToken.login = '';
+      },
+      'error-callback': () => {
+        console.error('✗ Login reCAPTCHA error');
+      }
+    });
+    console.log('Login widget rendered with ID:', loginRecaptchaWidget);
+  }
+  if (tab === 'register' && !registerRecaptchaWidget) {
+    registerRecaptchaWidget = grecaptcha.render('registerRecaptchaWidget', {
+      sitekey,
+      callback: token => {
+        console.log('✓ Register reCAPTCHA callback fired with token:', token.substring(0, 30) + '...');
+        currentRecaptchaToken.register = token;
+      },
+      'expired-callback': () => {
+        console.warn('⚠ Register reCAPTCHA expired');
+        currentRecaptchaToken.register = '';
+      },
+      'error-callback': () => {
+        console.error('✗ Register reCAPTCHA error');
+      }
+    });
+    console.log('Register widget rendered with ID:', registerRecaptchaWidget);
+  }
+}
+
+// ── UTILS ──────────────────────────────────────────────
+async function req(url, method='GET', body=null, params={}) {
+  const qs  = new URLSearchParams(params).toString();
+  const opts = { method, headers:{'Content-Type':'application/json'} };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(qs ? `${url}?${qs}` : url, opts);
+  return res.json();
+}
+
+function toast(msg, type='') {
+  const w = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`; t.textContent = msg;
+  w.appendChild(t);
+  setTimeout(()=>t.classList.add('show'),10);
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),300); },3500);
+}
+
+function badge(s) {
+  const m = {Pending:'badge-pending',Ongoing:'badge-ongoing',Resolved:'badge-resolved'};
+  return `<span class="badge ${m[s]||''}">${s}</span>`;
+}
+function roleBadge(r) {
+  const m = {admin:'badge-admin',staff:'badge-staff',resident:'badge-resident'};
+  return `<span class="badge ${m[r]||''}">${r}</span>`;
+}
+function statusBadge(s) {
+  const m = {active:'badge-active',pending:'badge-pend-acc',disabled:'badge-disabled'};
+  return `<span class="badge ${m[s]||''}">${s}</span>`;
+}
+function fmtDate(d) { return d ? new Date(d).toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric'}) : '—'; }
+function fmtDateTime(d) { return d ? new Date(d).toLocaleString('en-PH',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '—'; }
+function setHTML(id,h) { const el=document.getElementById(id); if(el) el.innerHTML=h; }
+
+// ── PUBLIC NAV ─────────────────────────────────────────
+function pubScroll(id) {
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.pub-nav-links a').forEach(a=>a.classList.remove('active'));
+}
+
+// ── AUTH MODAL ─────────────────────────────────────────
+function openAuth(tab='login') {
+  document.getElementById('authModal').classList.add('open');
+  switchTab(tab);
+}
+function closeAuth() { document.getElementById('authModal').classList.remove('open'); }
+function switchTab(tab) {
+  document.getElementById('loginForm').style.display    = tab==='login'    ? 'block':'none';
+  document.getElementById('registerForm').style.display = tab==='register' ? 'block':'none';
+  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  renderRecaptchaWidget(tab);
+}
+document.getElementById('authModal').addEventListener('click',e=>{ if(e.target===document.getElementById('authModal')) closeAuth(); });
+
+function togglePw(id, btn) {
+  const el = document.getElementById(id);
+  el.type  = el.type==='password' ? 'text' : 'password';
+  btn.textContent = el.type==='password' ? '👁' : '🙈';
+}
+
+// ── LOGIN ──────────────────────────────────────────────
+async function doLogin() {
+  const email    = document.getElementById('l-email').value.trim();
+  const password = document.getElementById('l-password').value;
+  const captcha  = currentRecaptchaToken.login;
+  console.log('Login reCAPTCHA token:', captcha);
+  console.log('reCAPTCHA ready:', recaptchaReady);
+  console.log('Widget ID:', loginRecaptchaWidget);
+  if (!email||!password) { toast('Please enter your email and password.','error'); return; }
+  if (!captcha) { 
+    console.warn('No reCAPTCHA token. Widget response:', loginRecaptchaWidget !== null ? grecaptcha.getResponse(loginRecaptchaWidget) : 'widget not rendered');
+    toast('Please complete the captcha verification.','error'); 
+    return; 
+  }
+  const data = await req(API.auth,'POST',{email,password,recaptcha_response:captcha},{action:'login'});
+  if (typeof grecaptcha !== 'undefined' && loginRecaptchaWidget !== null) {
+    grecaptcha.reset(loginRecaptchaWidget);
+    currentRecaptchaToken.login = '';
+  }
+  if (data.success) {
+    currentUser = data.user; closeAuth(); showApp();
+    toast(`Welcome, ${currentUser.full_name}!`,'success');
+  } else {
+    const details = data.errors ? ` (${data.errors.join(', ')})` : '';
+    toast(`${data.message}${details}`,'error');
+    console.error('Login reCAPTCHA error:', data.errors || 'none');
+  }
+}
+document.getElementById('l-password').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+
+// ── REGISTER ───────────────────────────────────────────
+async function doRegister() {
+  const full_name = document.getElementById('r-fullname').value.trim();
+  const email     = document.getElementById('r-email').value.trim();
+  const address   = document.getElementById('r-address').value.trim();
+  const contact   = document.getElementById('r-contact').value.trim();
+  const password  = document.getElementById('r-password').value;
+  const confirm   = document.getElementById('r-confirm').value;
+  const captcha   = currentRecaptchaToken.register;
+  console.log('Register reCAPTCHA token:', captcha);
+  if (!full_name||!email||!contact||!password||!captcha) { toast('Please fill in all required fields.','error'); return; }
+  if (password!==confirm)  { toast('Passwords do not match.','error'); return; }
+  if (password.length<6)   { toast('Password must be at least 6 characters.','error'); return; }
+  const data = await req(API.auth,'POST',{full_name,email,password,address,contact,recaptcha_response:captcha},{action:'register'});
+  if (typeof grecaptcha !== 'undefined' && registerRecaptchaWidget !== null) {
+    grecaptcha.reset(registerRecaptchaWidget);
+    currentRecaptchaToken.register = '';
+  }
+  if (data.success) {
+    toast(data.message,'success');
+    ['r-fullname','r-email','r-address','r-contact','r-password','r-confirm'].forEach(id=>document.getElementById(id).value='');
+    currentUser = data.user;
+    closeAuth(); showApp();
+  } else {
+    const details = data.errors ? ` (${data.errors.join(', ')})` : '';
+    toast(`${data.message}${details}`,'error');
+    console.error('Register reCAPTCHA error:', data.errors || 'none');
+  }
+}
+
+// ── FORGOT PASSWORD ────────────────────────────────────
+function openForgot() {
+  closeAuth();
+  document.getElementById('forgotModal').classList.add('open');
+  ['fp-step1','fp-step2','fp-step3'].forEach((id,i)=>document.getElementById(id).style.display=i===0?'block':'none');
+  ['fp-email','fp-contact','fp-newpass','fp-confirm'].forEach(id=>document.getElementById(id).value='');
+}
+function closeForgot() { document.getElementById('forgotModal').classList.remove('open'); }
+document.getElementById('forgotModal').addEventListener('click',e=>{ if(e.target===document.getElementById('forgotModal')) closeForgot(); });
+
+async function verifyIdentity() {
+  const email   = document.getElementById('fp-email').value.trim();
+  const contact = document.getElementById('fp-contact').value.trim();
+  if (!email||!contact) { toast('Please enter your email and contact number.','error'); return; }
+  const data = await req(API.auth,'POST',{email,contact},{action:'verify_identity'});
+  if (data.success) {
+    document.getElementById('fp-fullname').textContent = data.full_name;
+    document.getElementById('fp-step1').style.display = 'none';
+    document.getElementById('fp-step2').style.display = 'block';
+  } else { toast(data.message,'error'); }
+}
+
+async function resetPassword() {
+  const new_password     = document.getElementById('fp-newpass').value;
+  const confirm_password = document.getElementById('fp-confirm').value;
+  if (!new_password||!confirm_password) { toast('Please fill in both fields.','error'); return; }
+  if (new_password!==confirm_password)  { toast('Passwords do not match.','error'); return; }
+  if (new_password.length<6)            { toast('Password must be at least 6 characters.','error'); return; }
+  const data = await req(API.auth,'POST',{new_password,confirm_password},{action:'reset_password'});
+  if (data.success) {
+    document.getElementById('fp-step2').style.display = 'none';
+    document.getElementById('fp-step3').style.display = 'block';
+  } else { toast(data.message,'error'); }
+}
+
+// ── LOGOUT ─────────────────────────────────────────────
+async function doLogout() {
+  await req(API.auth,'POST',{},{action:'logout'});
+  currentUser = null;
+  document.getElementById('systemApp').style.display  = 'none';
+  document.getElementById('publicSite').style.display = 'block';
+  toast('Logged out successfully.');
+}
+
+// ── SHOW APP ───────────────────────────────────────────
+function showApp() {
+  document.getElementById('publicSite').style.display = 'none';
+  document.getElementById('systemApp').style.display  = 'block';
+  document.getElementById('sidebarName').textContent  = currentUser.full_name;
+  document.getElementById('sidebarRole').textContent  = currentUser.role;
+  document.getElementById('topbarName').textContent   = currentUser.full_name;
+  document.getElementById('userAvatar').textContent   = currentUser.full_name[0].toUpperCase();
+  document.getElementById('welcomeMsg').textContent   = `Welcome back, ${currentUser.full_name}!`;
+
+  const isAdmin = currentUser.role==='admin' || currentUser.role==='staff';
+  document.querySelectorAll('.admin-only').forEach(el=>el.style.display=isAdmin?'flex':'none');
+  document.querySelectorAll('.admin-only.nav-section').forEach(el=>el.style.display=isAdmin?'block':'none');
+  document.querySelectorAll('.stat-card-app.admin-only').forEach(el=>el.style.display=isAdmin?'block':'none');
+
+  loadDashboard();
+  loadBlotter();
+  loadReports();
+  loadProfile();
+  if (isAdmin) { loadUsers(); loadInbox(); }
+}
+
+// ── CHECK SESSION ──────────────────────────────────────
+async function checkSession() {
+  const data = await req(API.auth,'GET',null,{action:'check'});
+  if (data.logged_in) { currentUser = data.user; showApp(); }
+}
+
+// ── NAVIGATE ───────────────────────────────────────────
+function navigate(name) {
+  document.querySelectorAll('.page-section').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name)?.classList.add('active');
+  document.querySelector(`[data-nav="${name}"]`)?.classList.add('active');
+  const titles = {dashboard:'Dashboard',newcomplaint:'New Complaint',blotter:'Blotter Records',reports:'Reports',accounts:'Manage Accounts',inbox:'Inbox',profile:'My Profile'};
+  document.getElementById('pageTitle').textContent = titles[name]||name;
+  if (name==='dashboard')   loadDashboard();
+  if (name==='blotter')     loadBlotter();
+  if (name==='reports')     loadReports();
+  if (name==='accounts')    loadUsers();
+  if (name==='inbox')       loadInbox();
+}
+
+// ── DASHBOARD ──────────────────────────────────────────
+async function loadDashboard() {
+  const d = await req(API.dashboard);
+  setHTML('d-total',   d.total_complaints);
+  setHTML('d-blotter', d.total_blotter);
+  setHTML('d-pending', d.pending);
+  setHTML('d-ongoing', d.ongoing);
+  setHTML('d-resolved',d.resolved);
+  setHTML('d-pendingAcc', d.pending_accounts);
+
+  // Update badges
+  const pb = document.getElementById('pendingBadge');
+  if (pb) { pb.textContent=d.pending_accounts; pb.style.display=d.pending_accounts>0?'inline':'none'; }
+  const ib = document.getElementById('inboxBadge');
+  if (ib) { ib.textContent=d.unread_messages;  ib.style.display=d.unread_messages>0?'inline':'none'; }
+
+  const rows = d.recent?.map(c=>`
+    <tr>
+      <td><span class="case-num">${c.case_number}</span></td>
+      <td>${c.complainant_name}</td>
+      <td>${c.respondent_name}</td>
+      <td>${badge(c.status)}</td>
+      <td>${fmtDate(c.date_of_incident)}</td>
+      <td><button class="btn btn-sm" onclick="openEdit(${c.id})">✏️ Edit</button></td>
+    </tr>`).join('') || `<tr><td colspan="6"><div class="empty-state">No cases yet</div></td></tr>`;
+  setHTML('recentTbody', rows);
+}
+
+// ── SAVE COMPLAINT ─────────────────────────────────────
+async function saveComplaint(e) {
+  e.preventDefault();
+  const body = {
+    complainant_name:     document.getElementById('f-cname').value.trim(),
+    complainant_address:  document.getElementById('f-caddr').value.trim(),
+    complainant_contact:  document.getElementById('f-ccon').value.trim(),
+    respondent_name:      document.getElementById('f-rname').value.trim(),
+    respondent_address:   document.getElementById('f-raddr').value.trim(),
+    incident_description: document.getElementById('f-desc').value.trim(),
+    date_of_incident:     document.getElementById('f-date').value,
+    status:               document.getElementById('f-status').value,
+    notes:                document.getElementById('f-notes').value.trim(),
+  };
+  const data = await req(API.complaints,'POST',body);
+  if (data.success) {
+    toast(`✅ Complaint ${data.case_number} saved!`,'success');
+    document.getElementById('complaintForm').reset();
+    navigate('dashboard');
+  } else { toast(data.message||'Failed to save.','error'); }
+}
+
+// ── BLOTTER ────────────────────────────────────────────
+async function loadBlotter(search='') {
+  const data = await req(API.blotter,'GET',null,{search});
+  const rows = data.length ? data.map(b=>`
+    <tr>
+      <td><span class="case-num">${b.blotter_number}</span></td>
+      <td><span class="case-num" style="color:var(--muted)">${b.case_number}</span></td>
+      <td>${b.complainant_name}</td>
+      <td>${b.respondent_name}</td>
+      <td>${badge(b.status)}</td>
+      <td>${fmtDate(b.hearing_date)}</td>
+      <td><button class="btn btn-sm" onclick="openEdit(${b.complaint_id})">✏️ Edit</button></td>
+    </tr>`).join('') : `<tr><td colspan="7"><div class="empty-state">No blotter records found</div></td></tr>`;
+  setHTML('blotterTbody', rows);
+}
+
+// ── REPORTS ────────────────────────────────────────────
+async function loadReports() {
+  const status = document.getElementById('reportStatus')?.value || '';
+  const search = document.getElementById('reportSearch')?.value  || '';
+  const data   = await req(API.complaints,'GET',null,{status,search});
+  const rows   = data.length ? data.map(c=>`
+    <tr>
+      <td><span class="case-num">${c.case_number}</span></td>
+      <td>${c.complainant_name}</td>
+      <td>${c.respondent_name}</td>
+      <td>${badge(c.status)}</td>
+      <td>${fmtDate(c.date_of_incident)}</td>
+      <td>${fmtDate(c.date_filed)}</td>
+    </tr>`).join('') : `<tr><td colspan="6"><div class="empty-state">No records found</div></td></tr>`;
+  setHTML('reportTbody', rows);
+}
+
+// ── PRINT ──────────────────────────────────────────────
+function printReport(tableId, title) {
+  const tbl = document.getElementById(tableId);
+  if (!tbl) return;
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>${title}</title><style>
+    body{font-family:Arial,sans-serif;padding:24px}
+    h2{color:#1a3a6b;margin-bottom:4px}p{color:#666;font-size:12px;margin-bottom:16px}
+    table{width:100%;border-collapse:collapse}th,td{padding:8px 10px;border:1px solid #ccc;font-size:12px;text-align:left}
+    th{background:#e3f2fd;font-weight:600;color:#1a3a6b}.btn{display:none}.badge{border-radius:4px;padding:2px 6px}
+  </style></head><body>
+  <h2>Barangay ACLC — ${title}</h2>
+  <p>Printed: ${new Date().toLocaleDateString('en-PH',{dateStyle:'long'})}</p>
+  ${tbl.outerHTML}<script>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+// ── EDIT COMPLAINT ─────────────────────────────────────
+async function openEdit(id) {
+  editingId = id;
+  const c = await req(API.complaints,'GET',null,{id});
+  if (c.error) { toast('Failed to load complaint.','error'); return; }
+  document.getElementById('edit-id').value    = c.id;
+  document.getElementById('editCaseNum').textContent = c.case_number;
+  document.getElementById('e-cname').value   = c.complainant_name;
+  document.getElementById('e-caddr').value   = c.complainant_address||'';
+  document.getElementById('e-ccon').value    = c.complainant_contact||'';
+  document.getElementById('e-rname').value   = c.respondent_name;
+  document.getElementById('e-raddr').value   = c.respondent_address||'';
+  document.getElementById('e-desc').value    = c.incident_description;
+  document.getElementById('e-date').value    = c.date_of_incident;
+  document.getElementById('e-status').value  = c.status;
+  document.getElementById('e-notes').value   = c.notes||'';
+  document.getElementById('editModal').classList.add('open');
+}
+function closeEdit() { document.getElementById('editModal').classList.remove('open'); editingId=null; }
+document.getElementById('editModal').addEventListener('click',e=>{ if(e.target===document.getElementById('editModal')) closeEdit(); });
+
+async function updateComplaint() {
+  const body = {
+    complainant_name:     document.getElementById('e-cname').value.trim(),
+    complainant_address:  document.getElementById('e-caddr').value.trim(),
+    complainant_contact:  document.getElementById('e-ccon').value.trim(),
+    respondent_name:      document.getElementById('e-rname').value.trim(),
+    respondent_address:   document.getElementById('e-raddr').value.trim(),
+    incident_description: document.getElementById('e-desc').value.trim(),
+    date_of_incident:     document.getElementById('e-date').value,
+    status:               document.getElementById('e-status').value,
+    notes:                document.getElementById('e-notes').value.trim(),
+  };
+  const data = await req(API.complaints,'PUT',body,{id:editingId});
+  if (data.success) { toast('Complaint updated.','success'); closeEdit(); loadDashboard(); loadBlotter(); loadReports(); }
+  else toast(data.message||'Update failed.','error');
+}
+
+async function deleteComplaint() {
+  if (!confirm('Delete this complaint? This cannot be undone.')) return;
+  const data = await req(API.complaints,'DELETE',null,{id:editingId});
+  if (data.success) { toast('Complaint deleted.','success'); closeEdit(); loadDashboard(); loadBlotter(); loadReports(); }
+  else toast(data.message||'Delete failed.','error');
+}
+
+// ── ACCOUNTS ───────────────────────────────────────────
+async function loadUsers(search='') {
+  const data   = await req(API.auth,'GET',null,{action:'users'});
+  allUsers     = data;
+  const filter = document.getElementById('usersFilter')?.value||'';
+  let filtered = data;
+  if (search)  filtered = filtered.filter(u=>u.full_name.toLowerCase().includes(search.toLowerCase())||u.email.toLowerCase().includes(search.toLowerCase()));
+  if (filter)  filtered = filtered.filter(u=>u.status===filter);
+
+  const rows = filtered.length ? filtered.map(u=>`
+    <tr>
+      <td><strong>${u.full_name}</strong></td>
+      <td>${u.email}</td>
+      <td>${u.contact||'—'}</td>
+      <td>${roleBadge(u.role)}</td>
+      <td>${statusBadge(u.status)}</td>
+      <td>${fmtDate(u.created_at)}</td>
+      <td>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          ${u.status==='pending' ? `<button class="btn btn-success btn-sm" onclick="quickApprove(${u.id})">✅ Approve</button>` : ''}
+          ${u.status==='active'  ? `<button class="btn btn-warning btn-sm" onclick="quickDisable(${u.id})">🚫 Disable</button>` : ''}
+          <button class="btn btn-sm" onclick="openUserModal(${u.id})">✏️ Edit</button>
+          ${u.role!=='admin' ? `<button class="btn btn-danger btn-sm" onclick="quickDelete(${u.id})">🗑</button>` : ''}
+        </div>
+      </td>
+    </tr>`).join('') : `<tr><td colspan="7"><div class="empty-state">No accounts found</div></td></tr>`;
+  setHTML('usersTbody', rows);
+}
+
+async function quickApprove(id) {
+  const userId = Number(id);
+  const u = allUsers.find(x=>Number(x.id)===userId);
+  if (!u) return;
+  await req(API.auth,'POST',{id: userId,status:'active',role:u.role},{action:'update_user'});
+  toast('Account approved!','success'); loadUsers(); loadDashboard();
+}
+async function quickDisable(id) {
+  if (!confirm('Disable this account?')) return;
+  const userId = Number(id);
+  const u = allUsers.find(x=>Number(x.id)===userId);
+  if (!u) return;
+  await req(API.auth,'POST',{id: userId,status:'disabled',role:u.role},{action:'update_user'});
+  toast('Account disabled.','success'); loadUsers(); loadDashboard();
+}
+async function quickDelete(id) {
+  const userId = Number(id);
+  if (!confirm('Permanently delete this account? This cannot be undone.')) return;
+  const data = await req(API.auth,'POST',{id: userId},{action:'delete_user'});
+  if (data.success) { toast('Account deleted.','success'); loadUsers(); }
+  else toast('Cannot delete this account.','error');
+}
+
+function openUserModal(id) {
+  const userId = Number(id);
+  editingUserId = userId;
+  const u = allUsers.find(x=>Number(x.id)===userId);
+  if (!u) return;
+  document.getElementById('um-id').value      = u.id;
+  document.getElementById('um-displayname').textContent    = u.full_name;
+  document.getElementById('um-displayemail').textContent   = u.email;
+  document.getElementById('um-displaycontact').textContent = `📞 ${u.contact||'No contact'}`;
+  document.getElementById('um-role').value   = u.role;
+  document.getElementById('um-status').value = u.status;
+  document.getElementById('userModal').classList.add('open');
+}
+function closeUserModal() { document.getElementById('userModal').classList.remove('open'); editingUserId=null; }
+document.getElementById('userModal').addEventListener('click',e=>{ if(e.target===document.getElementById('userModal')) closeUserModal(); });
+
+async function updateUser() {
+  const role   = document.getElementById('um-role').value;
+  const status = document.getElementById('um-status').value;
+  const data   = await req(API.auth,'POST',{id:editingUserId,role,status},{action:'update_user'});
+  if (data.success) { toast('Account updated.','success'); closeUserModal(); loadUsers(); loadDashboard(); }
+  else toast('Update failed.','error');
+}
+async function deleteUser() {
+  if (!confirm('Permanently delete this account?')) return;
+  const data = await req(API.auth,'POST',{id:editingUserId},{action:'delete_user'});
+  if (data.success) { toast('Account deleted.','success'); closeUserModal(); loadUsers(); }
+  else toast('Cannot delete admin accounts.','error');
+}
+
+// ── INBOX ──────────────────────────────────────────────
+async function loadInbox() {
+  const data = await req(API.messages);
+  allMessages = data;
+  const rows  = data.length ? data.map(m=>`
+    <tr style="${m.is_read==='0'||m.is_read===0?'font-weight:600;background:#fffde7':''}">
+      <td>${m.sender_name}</td>
+      <td>${m.sender_email}</td>
+      <td>${m.subject}</td>
+      <td>${m.is_read==='0'||m.is_read===0?'<span class="badge badge-unread">Unread</span>':'<span class="badge badge-read">Read</span>'}</td>
+      <td>${fmtDateTime(m.sent_at)}</td>
+      <td><button class="btn btn-sm btn-primary" onclick="viewMessage(${m.id})">👁 View</button></td>
+    </tr>`).join('') : `<tr><td colspan="6"><div class="empty-state">No messages yet</div></td></tr>`;
+  setHTML('inboxTbody', rows);
+}
+
+async function viewMessage(id) {
+  const messageId = Number(id);
+  viewingMsgId = messageId;
+  const m = allMessages.find(x=>Number(x.id)===messageId);
+  if (!m) return;
+  document.getElementById('msg-from').textContent    = m.sender_name;
+  document.getElementById('msg-email').textContent   = m.sender_email;
+  document.getElementById('msg-subject').textContent = m.subject;
+  document.getElementById('msg-date').textContent    = fmtDateTime(m.sent_at);
+  document.getElementById('msg-body').textContent    = m.message;
+  document.getElementById('msgModal').classList.add('open');
+  // Mark as read
+  if (m.is_read==='0'||m.is_read===0) {
+    await req(API.messages,'POST',{id: messageId},{action:'read'});
+    loadInbox(); loadDashboard();
+  }
+}
+function closeMsgModal() { document.getElementById('msgModal').classList.remove('open'); viewingMsgId=null; }
+document.getElementById('msgModal').addEventListener('click',e=>{ if(e.target===document.getElementById('msgModal')) closeMsgModal(); });
+
+async function deleteMessage() {
+  if (!confirm('Delete this message?')) return;
+  const data = await req(API.messages,'DELETE',null,{id:viewingMsgId});
+  if (data.success) { toast('Message deleted.','success'); closeMsgModal(); loadInbox(); loadDashboard(); }
+}
+
+// ── CONTACT FORM ───────────────────────────────────────
+async function sendContact() {
+  const sender_name  = document.getElementById('ct-name').value.trim();
+  const sender_email = document.getElementById('ct-email').value.trim();
+  const subject      = document.getElementById('ct-subject').value.trim();
+  const message      = document.getElementById('ct-msg').value.trim();
+  if (!sender_name||!sender_email||!subject||!message) { toast('Please fill in all fields.','error'); return; }
+  const data = await req(API.messages,'POST',{sender_name,sender_email,subject,message},{action:'send'});
+  if (data.success) {
+    toast('✅ Message sent! The Barangay office will contact you soon.','success');
+    ['ct-name','ct-email','ct-subject','ct-msg'].forEach(id=>document.getElementById(id).value='');
+  } else { toast(data.message||'Failed to send.','error'); }
+}
+
+// ── PROFILE ────────────────────────────────────────────
+function loadProfile() {
+  if (!currentUser) return;
+  document.getElementById('profileInfo').innerHTML = `
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="width:54px;height:54px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex-shrink:0">${currentUser.full_name[0].toUpperCase()}</div>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:var(--blue)">${currentUser.full_name}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">${currentUser.email}</div>
+        <div style="font-size:12px;margin-top:4px">${roleBadge(currentUser.role)}</div>
+      </div>
+    </div>`;
+}
+async function changePassword() {
+  const old_password = document.getElementById('pw-old').value;
+  const new_password = document.getElementById('pw-new').value;
+  const confirm_pw   = document.getElementById('pw-confirm').value;
+  if (!old_password||!new_password) { toast('Please fill in all fields.','error'); return; }
+  if (new_password!==confirm_pw)    { toast('New passwords do not match.','error'); return; }
+  if (new_password.length<6)        { toast('Password must be at least 6 characters.','error'); return; }
+  const data = await req(API.auth,'POST',{old_password,new_password},{action:'change_password'});
+  if (data.success) {
+    toast(data.message,'success');
+    ['pw-old','pw-new','pw-confirm'].forEach(id=>document.getElementById(id).value='');
+  } else { toast(data.message,'error'); }
+}
+
+// ── INIT ───────────────────────────────────────────────
+checkSession();
+</script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
+</body>
+</html>
